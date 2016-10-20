@@ -1,0 +1,27 @@
+{
+  "name": "smartcar-api",
+  "version": "0.0.0",
+  "description": "Smartcar API project",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/**.js",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/calebhskim/smartcar-api.git"
+  },
+  "author": "Caleb Kim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/calebhskim/smartcar-api/issues"
+  },
+  "homepage": "https://github.com/calebhskim/smartcar-api#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "chai": "^3.5.0",
+    "express": "^4.14.0",
+    "mocha": "^3.1.2",
+    "sinon": "^1.17.6"
+  }
+}
