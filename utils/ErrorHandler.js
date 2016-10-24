@@ -1,7 +1,7 @@
 module.exports = function(error) {
   return {
-    code: 'TEST',
-    status: 200,
-    message: 'Halloa'
+    code: error.code || 'INTERNAL',
+    status: error.status || 500,
+    message: error.message || 'Internal Server Error'
   }
 }
