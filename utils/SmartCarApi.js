@@ -19,6 +19,26 @@ const SmartCarApi = {
         status: status
       });
     });
+  },
+  security: function(id, cb) {
+    gm.getSecurityStatus(id, function(error, response, body) {
+      if (error) {
+        cb(errorHandler(error));
+      }
+
+      const { status, data: { doors: { values }  } } = body;
+      cb(null, {
+        data: values.map(function(door) {
+          const { location, locked } = door;
+
+          return {
+            location: location.value,
+            locked: locked.value
+          }
+        }),
+        status: status
+      });
+    });
   }
 }
 

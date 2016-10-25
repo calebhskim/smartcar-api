@@ -4,8 +4,9 @@
   "description": "Smartcar API project",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/**.js",
-    "start": "node index.js"
+    "test": "npm run lint && mocha test/**.js",
+    "start": "node index.js",
+    "lint": "./node_modules/.bin/eslint **.js ./utils/**.js ./middleware/**.js"
   },
   "repository": {
     "type": "git",
@@ -26,5 +27,12 @@
     "path": "^0.12.7",
     "request": "^2.75.0",
     "sinon": "^1.17.6"
+  },
+  "devDependencies": {
+    "eslint": "^3.8.1",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-plugin-import": "^2.0.1",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.4.1"
   }
 }

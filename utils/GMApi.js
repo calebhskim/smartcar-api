@@ -1,6 +1,9 @@
 const req = require('request');
 const request = req.defaults({
-  baseUrl: 'http://gmapi.azurewebsites.net'
+  baseUrl: 'http://gmapi.azurewebsites.net',
+  headers: {
+    'Content-Type': 'application/json'
+  }
 });
 
 const GMApi = {
@@ -8,9 +11,6 @@ const GMApi = {
     request({
       url: '/getVehicleInfoService',
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
       json: {
         id: id,
         responseType: "JSON"
@@ -23,9 +23,6 @@ const GMApi = {
     request({
       url: '/getSecurityStatusService',
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
       json: {
         id: id,
         responseType: "JSON"

@@ -19,12 +19,23 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
-app.get('/vehicles/:id', function (req, res) {
-  scApi.vehicleInfo(req.params.id, function(error, response) {
+app.get('/vehicles/:id', (req, res) => {
+  scApi.vehicleInfo(req.params.id, (error, response) => {
     if (error) {
 
     }
-    
+
+    const { status, data } = response;
+    res.status(status).json(data);
+  });
+});
+
+app.get('/vehicles/:id/doors', (req, res) => {
+  scApi.security(req.params.id, (error, response) => {
+    if (error) {
+
+    }
+
     const { status, data } = response;
     res.status(status).json(data);
   });
@@ -32,7 +43,7 @@ app.get('/vehicles/:id', function (req, res) {
 
 app.use(require('./middleware/404.js'));
 
-app.listen(app.get('port'), function() {
-  console.log('Server started: http://localhost:' + app.get('port') + '/');
+app.listen(app.get('port'), () => {
+  console.log(`Server started: http://localhost:${app.get('port')}/`);
 });
 
