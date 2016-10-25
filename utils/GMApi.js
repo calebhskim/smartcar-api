@@ -1,36 +1,37 @@
 const req = require('request');
+
 const request = req.defaults({
   baseUrl: 'http://gmapi.azurewebsites.net',
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 });
 
 const GMApi = {
-  getVehicleInfo: function(id, callback) {
+  getVehicleInfo: (id, callback) => {
     request({
       url: '/getVehicleInfoService',
       method: 'POST',
       json: {
-        id: id,
-        responseType: "JSON"
-      }
+        id,
+        responseType: 'JSON',
+      },
     },
     callback
-    )
+    );
   },
-  getSecurityStatus: function(id, callback) {
+  getSecurityStatus: (id, callback) => {
     request({
       url: '/getSecurityStatusService',
       method: 'POST',
       json: {
-        id: id,
-        responseType: "JSON"
-      }
+        id,
+        responseType: 'JSON',
+      },
     },
     callback
-    )
-  }
-}
+    );
+  },
+};
 
 module.exports = GMApi;

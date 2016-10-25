@@ -1,4 +1,5 @@
-module.exports = function(req, res, next) {
+/* eslint-disable no-unused-vars */
+module.exports = (req, res, next) => {
   res.status(404);
 
   if (req.accepts('html')) {

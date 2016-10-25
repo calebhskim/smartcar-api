@@ -1,12 +1,11 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
-const path = require('path');
 const scApi = require('./utils/SmartCarApi');
 
-var app = express();
-var hbs = exphbs.create({
-  extname: '.hbs'
+const app = express();
+const hbs = exphbs.create({
+  extname: '.hbs',
 });
 
 app.engine('.hbs', hbs.engine);
@@ -22,7 +21,7 @@ app.get('/', (req, res) => {
 app.get('/vehicles/:id', (req, res) => {
   scApi.vehicleInfo(req.params.id, (error, response) => {
     if (error) {
-
+      res.status(error.status).json(error);
     }
 
     const { status, data } = response;
@@ -33,7 +32,7 @@ app.get('/vehicles/:id', (req, res) => {
 app.get('/vehicles/:id/doors', (req, res) => {
   scApi.security(req.params.id, (error, response) => {
     if (error) {
-
+      res.status(error.status).json(error);
     }
 
     const { status, data } = response;

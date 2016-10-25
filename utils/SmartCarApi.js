@@ -2,8 +2,8 @@ const gm = require('./GMApi');
 const errorHandler = require('./ErrorHandler');
 
 const SmartCarApi = {
-  vehicleInfo: function(id, cb) {
-    gm.getVehicleInfo(id, function(error, response, body) {
+  vehicleInfo: (id, cb) => {
+    gm.getVehicleInfo(id, (error, response, body) => {
       if (error) {
         cb(errorHandler(error));
       }
@@ -14,32 +14,32 @@ const SmartCarApi = {
           vin: vin.value,
           color: color.value,
           doorCount: fourDoorSedan.value ? 4 : 2,
-          driveTrain: driveTrain.value
+          driveTrain: driveTrain.value,
         },
-        status: status
+        status,
       });
     });
   },
-  security: function(id, cb) {
-    gm.getSecurityStatus(id, function(error, response, body) {
+  security: (id, cb) => {
+    gm.getSecurityStatus(id, (error, response, body) => {
       if (error) {
         cb(errorHandler(error));
       }
 
       const { status, data: { doors: { values }  } } = body;
       cb(null, {
-        data: values.map(function(door) {
+        data: values.map((door) => {
           const { location, locked } = door;
 
           return {
             location: location.value,
-            locked: locked.value
-          }
+            locked: locked.value,
+          };
         }),
-        status: status
+        status,
       });
     });
-  }
-}
+  },
+};
 
 module.exports = SmartCarApi;

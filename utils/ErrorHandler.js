@@ -1,7 +1,8 @@
-module.exports = function(error) {
+module.exports = (error) => {
+  const { code, status, message } = error;
   return {
-    code: error.code || 'INTERNAL',
-    status: error.status || 500,
-    message: error.message || 'Internal Server Error'
-  }
-}
+    code: code || 'INTERNAL',
+    status: status || 500,
+    message: message || 'Internal Server Error',
+  };
+};
