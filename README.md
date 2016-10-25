@@ -6,6 +6,7 @@ Smartcar API Project
   * Add error handling - create 404 route
   * Possible rate limiting
 * Write middleware and services
+* Add config and env
 * Tests
 * Test coverage with istanbul
 * Update README

@@ -4,9 +4,9 @@
   "description": "Smartcar API project",
   "main": "index.js",
   "scripts": {
-    "test": "npm run lint && mocha test/**.js",
-    "start": "node index.js",
-    "lint": "./node_modules/.bin/eslint **.js ./utils/**.js ./middleware/**.js"
+    "test": "npm run lint && istanbul cover ./node_modules/.bin/_mocha test/**.js",
+    "start": "node app.js",
+    "lint": "./node_modules/.bin/eslint ./* --ext .js"
   },
   "repository": {
     "type": "git",
@@ -21,12 +21,14 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "chai": "^3.5.0",
+    "eslint-plugin-import": "^2.0.1",
     "express": "^4.14.0",
     "express-handlebars": "^3.0.0",
     "mocha": "^3.1.2",
     "path": "^0.12.7",
     "request": "^2.75.0",
-    "sinon": "^1.17.6"
+    "sinon": "^1.17.6",
+    "supertest": "^2.0.1"
   },
   "devDependencies": {
     "eslint": "^3.8.1",

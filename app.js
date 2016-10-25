@@ -3,7 +3,7 @@ const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const scApi = require('./utils/SmartCarApi');
 
-const app = express();
+const app = module.exports = express();
 const hbs = exphbs.create({
   extname: '.hbs',
 });
