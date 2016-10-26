@@ -6,7 +6,7 @@
   "scripts": {
     "test": "./node_modules/.bin/nyc npm run coverage",
     "coverage": "npm run lint && istanbul cover ./node_modules/.bin/_mocha test/**/*.js",
-    "start": "node app.js",
+    "start": "node ./app/index.js",
     "lint": "./node_modules/.bin/eslint ./* --ext .js"
   },
   "repository": {

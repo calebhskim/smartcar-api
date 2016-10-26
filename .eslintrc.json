@@ -6,6 +6,9 @@
         "import"
     ],
     "rules": {
-      "no-multi-spaces": "off"
+      "no-multi-spaces": "off",
+      "import/no-unresolved": "off",
+      "import/no-extraneous-dependencies": "off",
+      "new-cap": "off"
     }
 }

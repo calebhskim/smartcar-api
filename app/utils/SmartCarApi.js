@@ -3,23 +3,12 @@ const errorHandler = require('./ErrorHandler');
 
 const SmartCarApi = {
   vehicleInfo: (id, cb) => {
-    gm.getVehicleInfo(id, (error, response, body) => {
+    gm.getVehicleInfo(id, (error, response) => {
       if (error) {
         return cb(errorHandler(error));
       }
 
-      const { status, data, reason } = body;
-
-      if (status !== '200') {
-        return cb(null, {
-          data: {
-            message: reason,
-          },
-          status,
-        });
-      }
-
-      const { vin, color, fourDoorSedan, driveTrain } = data;
+      const { status, data: { vin, color, fourDoorSedan, driveTrain } } = response;
 
       return cb(null, {
         data: {
@@ -33,23 +22,12 @@ const SmartCarApi = {
     });
   },
   security: (id, cb) => {
-    gm.getSecurityStatus(id, (error, response, body) => {
+    gm.getSecurityStatus(id, (error, response) => {
       if (error) {
         return cb(errorHandler(error));
       }
 
-      const { status, data, reason } = body;
-
-      if (status !== '200') {
-        return cb(null, {
-          data: {
-            message: reason,
-          },
-          status,
-        });
-      }
-
-      const { doors: { values } } = data;
+      const { status, data: { doors: { values } } } = response;
 
       return cb(null, {
         data: values.map((door) => {
@@ -60,6 +38,27 @@ const SmartCarApi = {
             locked: locked.value,
           };
         }),
+        status,
+      });
+    });
+  },
+  energy: (id, cb) => {
+    gm.getEnergy(id, (error, response) => {
+      if (error) {
+        return cb(errorHandler(error));
+      }
+
+      const { status, data: { tankLevel, batteryLevel } } = response;
+
+      return cb(null, {
+        data: {
+          tank: {
+            percentage: tankLevel.value,
+          },
+          battery: {
+            percentage: batteryLevel.value,
+          },
+        },
         status,
       });
     });
