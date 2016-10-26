@@ -1,11 +1,11 @@
 const sinon = require('sinon');
 const request = require('supertest');
-const { expect } = require('chai');
+const chai = require('chai');
 const app = require('../../../app');
 
-const once = (callback) => {
-  return callback;
-};
+const expect = chai.expect;
+chai.should();
+chai.use(require('chai-things'));
 
 describe('SmartCar Routes', () => {
   describe('#GET /vehicles/:id', () => {
@@ -67,26 +67,8 @@ describe('SmartCar Routes', () => {
           .end((err, res) => {
             if (err) return done(err);
 
-            const data = [
-              {
-                "location": "frontRight",
-                "locked": "False"
-              },
-              {
-                "location": "frontLeft",
-                "locked": "False"
-              },
-              {
-                "location": "backLeft",
-                "locked": "False"
-              },
-              {
-                "location": "backRight",
-                "locked": "True"
-              }
-            ];
-
-            expect(res.body).to.eql(data);
+            res.body.should.all.have.property('location');
+            res.body.should.all.have.property('locked');
             done();
           });
       });
@@ -110,10 +92,10 @@ describe('SmartCar Routes', () => {
     });
 
     describe('Given a valid id 1235 that does not have fuel', () => {
-      it('Should return 403 with appropriate message', (done) => {
+      it('Should return 400 with appropriate message', (done) => {
         request(app)
           .get(`/vehicles/${1235}/fuel`)
-          .expect(403)
+          .expect(400)
           .end((err, res) => {
             if (err) return done(err);
             
@@ -133,7 +115,7 @@ describe('SmartCar Routes', () => {
             if (err) return done(err);
 
             const { percentage } = res.body;
-            expect(percentage).to.eql('99.1');
+            expect(isNaN(parseFloat(percentage))).to.be.false;
             done();
           });
       });
@@ -157,30 +139,30 @@ describe('SmartCar Routes', () => {
     });
 
     describe('Given a valid id 1234 that does not have battery', () => {
-      it('Should return 403 with appropriate message', (done) => {
+      it('Should return 400 with appropriate message', (done) => {
         request(app)
-          .get(`/vehicles/${1235}/battery`)
-          .expect(403)
+          .get(`/vehicles/${1234}/battery`)
+          .expect(400)
           .end((err, res) => {
             if (err) return done(err);
             
             const { message } = res.body;
-            expect(message).to.eql('Vehicle with id 1235 does not have battery.');
+            expect(message).to.eql('Vehicle with id 1234 does not have a battery.');
             done();
           });
       });
     });
 
-    describe('Given a valid id 1234', () => {
+    describe('Given a valid id 1235', () => {
       it('Should return correct vehicle battery information', (done) => {
         request(app)
-          .get(`/vehicles/${1234}/battery`)
+          .get(`/vehicles/${1235}/battery`)
           .expect(200)
           .end((err, res) => {
             if (err) return done(err);
 
             const { percentage } = res.body;
-            expect(percentage).to.eql('v8');
+            expect(isNaN(parseFloat(percentage))).to.be.false;
             done();
           });
       });
