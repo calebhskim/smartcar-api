@@ -8,6 +8,14 @@ const once = (callback) => {
 };
 
 describe('SmartCar Routes', () => {
+  describe('#GET invalid route', () => {
+    it('Should return status 404', (done) => {
+      request(app)
+        .get('/invalid')
+        .expect(404, done);
+    });
+  });
+
   describe('#GET /', () => {
     it('Should return status 200', (done) => {
       request(app)
@@ -17,7 +25,22 @@ describe('SmartCar Routes', () => {
   });
 
   describe('#GET /vehicles/:id', () => {
-    describe('Given id 1234', () => {
+    describe('Given an invalid id 4321', () => {
+      it('Should error with a 404 and appropriate message', (done) => {
+        request(app)
+          .get(`/vehicles/${4321}/`)
+          .expect(404)
+          .end((err, res) => {
+            if (err) return done(err);
+
+            const { message } = res.body;
+            expect(message).to.eql('Vehicle id: 4321 not found.');
+            done();
+          });
+      });
+    });
+
+    describe('Given a valid id 1234', () => {
       it('Should return correct vehicle information', (done) => {
         request(app)
           .get(`/vehicles/${1234}/`)
