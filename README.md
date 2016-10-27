@@ -9,5 +9,6 @@ Smartcar API Project
 * Add config and env
 * Tests
 * Test coverage with istanbul
+* Clean up
 * Update README
 * Possible Redis caching

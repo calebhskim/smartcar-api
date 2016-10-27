@@ -62,4 +62,24 @@ router.get('/:id/battery', (req, res) => {
   });
 });
 
+router.post('/:id/engine', (req, res) => {
+  if (req.body && req.body.action) {
+    scApi.engine(req.params.id, req.body.action, (error, response) => {
+      if (error) {
+        return res.status(error.status).json(error);
+      }
+
+      const { status, data } = response;
+
+      return res.status(status).json(data);
+    });
+  }
+  else {
+    return res.status(400).json({
+      status: 400,
+      message: `Invalid or no action sent`,
+    });
+  }
+});
+
 module.exports = router;

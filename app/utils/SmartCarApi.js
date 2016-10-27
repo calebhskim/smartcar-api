@@ -63,6 +63,32 @@ const SmartCarApi = {
       });
     });
   },
+  engine: (id, action, cb) => {
+    if (action !== 'START' && action !== 'STOP') {
+      return cb({
+        status: 400,
+        message: `Invalid action ${action} is not one of START | STOP`,
+      });
+    }
+
+    const commands = { START: 'START_VEHICLE', STOP: 'STOP_VEHICLE' };
+    const result = { EXECUTED: 'success', FAILED: 'error' };
+
+    gm.postEngine(id, commands[action], (error, response) => {
+      if (error) {
+        return cb(errorHandler(error));
+      }
+
+      const { status, actionResult } = response;
+
+      return cb(null, {
+        data: {
+          status: result[actionResult.status],
+        },
+        status,
+      });
+    });
+  },
 };
 
 module.exports = SmartCarApi;

@@ -17,6 +17,10 @@ const GMApi = {
         responseType: 'JSON',
       },
     }, (error, response, body) => {
+      if (error) {
+        return callback(error);
+      }
+
       const { status, data, reason } = body;
 
       if (status !== '200') {
@@ -41,6 +45,10 @@ const GMApi = {
         responseType: 'JSON',
       },
     }, (error, response, body) => {
+      if (error) {
+        return callback(error);
+      }
+
       const { status, data, reason } = body;
 
       if (status !== '200') {
@@ -65,6 +73,10 @@ const GMApi = {
         responseType: 'JSON',
       },
     }, (error, response, body) => {
+      if (error) {
+        return callback(error);
+      }
+
       const { status, data, reason } = body;
 
       if (status !== '200') {
@@ -77,6 +89,35 @@ const GMApi = {
       return callback(null, {
         status,
         data,
+      });
+    });
+  },
+  postEngine: (id, command, callback) => {
+    request({
+      url: '/actionEngineService',
+      method: 'POST',
+      json: {
+        id,
+        command,
+        responseType: 'JSON',
+      },
+    }, (error, response, body) => {
+      if (error) {
+        return callback(error);
+      }
+
+      const { status, actionResult, reason } = body;
+
+      if (status !== '200') {
+        return callback({
+          status,
+          message: reason,
+        });
+      }
+
+      return callback(null, {
+        status,
+        actionResult,
       });
     });
   },
