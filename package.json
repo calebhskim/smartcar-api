@@ -4,8 +4,10 @@
   "description": "Smartcar API project",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/**.js",
-    "start": "node index.js"
+    "test": "./node_modules/.bin/nyc npm run coverage",
+    "coverage": "npm run lint && istanbul cover ./node_modules/.bin/_mocha -- 'test/**/*.js'",
+    "start": "node ./app/index.js",
+    "lint": "./node_modules/.bin/eslint ./* --ext .js"
   },
   "repository": {
     "type": "git",
@@ -18,10 +20,27 @@
   },
   "homepage": "https://github.com/calebhskim/smartcar-api#readme",
   "dependencies": {
+    "app-module-path": "^2.1.0",
     "body-parser": "^1.15.2",
     "chai": "^3.5.0",
+    "chai-things": "^0.2.0",
+    "eslint-plugin-import": "^2.0.1",
     "express": "^4.14.0",
+    "express-handlebars": "^3.0.0",
     "mocha": "^3.1.2",
-    "sinon": "^1.17.6"
+    "path": "^0.12.7",
+    "proxyquire": "^1.7.10",
+    "request": "^2.75.0",
+    "sinon": "^1.17.6",
+    "supertest": "^2.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^3.8.1",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-plugin-import": "^2.0.1",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.4.1",
+    "istanbul": "^0.4.5",
+    "nyc": "^8.3.2"
   }
 }
