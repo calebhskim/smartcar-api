@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+/* istanbul ignore next */
 module.exports = (req, res, next) => {
   res.status(404);
 

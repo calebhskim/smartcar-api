@@ -3,7 +3,7 @@ const errorHandler = require('./ErrorHandler');
 
 const SmartCarApi = {
   vehicleInfo: (id, cb) => {
-    gm.getVehicleInfo(id, (error, response) => {
+    gm.vehicleInfo(id, (error, response) => {
       if (error) {
         return cb(errorHandler(error));
       }
@@ -22,7 +22,7 @@ const SmartCarApi = {
     });
   },
   security: (id, cb) => {
-    gm.getSecurityStatus(id, (error, response) => {
+    gm.vehicleSecurityStatus(id, (error, response) => {
       if (error) {
         return cb(errorHandler(error));
       }
@@ -43,7 +43,7 @@ const SmartCarApi = {
     });
   },
   energy: (id, cb) => {
-    gm.getEnergy(id, (error, response) => {
+    gm.vehicleEnergy(id, (error, response) => {
       if (error) {
         return cb(errorHandler(error));
       }
@@ -64,17 +64,10 @@ const SmartCarApi = {
     });
   },
   engine: (id, action, cb) => {
-    if (action !== 'START' && action !== 'STOP') {
-      return cb({
-        status: 400,
-        message: `Invalid action ${action} is not one of START | STOP`,
-      });
-    }
-
     const commands = { START: 'START_VEHICLE', STOP: 'STOP_VEHICLE' };
     const result = { EXECUTED: 'success', FAILED: 'error' };
 
-    gm.postEngine(id, commands[action], (error, response) => {
+    gm.vehicleEngine(id, commands[action], (error, response) => {
       if (error) {
         return cb(errorHandler(error));
       }

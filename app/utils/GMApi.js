@@ -8,10 +8,9 @@ const request = req.defaults({
 });
 
 const GMApi = {
-  getVehicleInfo: (id, callback) => {
-    request({
+  vehicleInfo: (id, callback) => {
+    request.post({
       url: '/getVehicleInfoService',
-      method: 'POST',
       json: {
         id,
         responseType: 'JSON',
@@ -36,10 +35,9 @@ const GMApi = {
       });
     });
   },
-  getSecurityStatus: (id, callback) => {
-    request({
+  vehicleSecurityStatus: (id, callback) => {
+    request.post({
       url: '/getSecurityStatusService',
-      method: 'POST',
       json: {
         id,
         responseType: 'JSON',
@@ -64,10 +62,9 @@ const GMApi = {
       });
     });
   },
-  getEnergy: (id, callback) => {
-    request({
+  vehicleEnergy: (id, callback) => {
+    request.post({
       url: '/getEnergyService',
-      method: 'POST',
       json: {
         id,
         responseType: 'JSON',
@@ -92,10 +89,9 @@ const GMApi = {
       });
     });
   },
-  postEngine: (id, command, callback) => {
-    request({
+  vehicleEngine: (id, command, callback) => {
+    request.post({
       url: '/actionEngineService',
-      method: 'POST',
       json: {
         id,
         command,

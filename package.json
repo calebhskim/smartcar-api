@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/nyc npm run coverage",
-    "coverage": "npm run lint && istanbul cover ./node_modules/.bin/_mocha --recursive test/**/*.js",
+    "coverage": "npm run lint && istanbul cover ./node_modules/.bin/_mocha -- 'test/**/*.js'",
     "start": "node ./app/index.js",
     "lint": "./node_modules/.bin/eslint ./* --ext .js"
   },
@@ -29,6 +29,7 @@
     "express-handlebars": "^3.0.0",
     "mocha": "^3.1.2",
     "path": "^0.12.7",
+    "proxyquire": "^1.7.10",
     "request": "^2.75.0",
     "sinon": "^1.17.6",
     "supertest": "^2.0.1"
