@@ -1,8 +1,8 @@
-const sinon = require('sinon');
-const proxyquire = require('proxyquire');
-const req = require('supertest');
-const request = require('request');
-const { expect } = require('chai');
+import sinon from 'sinon';
+import proxyquire from 'proxyquire';
+import req from 'supertest';
+import request from 'request';
+import { expect } from 'chai';
 
 const TEST_ID = 1;
 const TEST_ACTION = { action: 'foo' };
@@ -19,7 +19,7 @@ describe('GM API', () => {
         status: 'foo',
         message: 'bar',
       });
-    gm = proxyquire('../../app/utils/GMApi', { request: request });
+    gm = proxyquire('../../lib/utils/GMApi', { request: request });
   });
 
   afterEach(() => {

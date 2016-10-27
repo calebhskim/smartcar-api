@@ -1,13 +1,14 @@
 {
   "name": "smartcar-api",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Smartcar API project",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/nyc npm run coverage",
+    "build": "./node_modules/.bin/babel src -d lib",
     "coverage": "npm run lint && istanbul cover ./node_modules/.bin/_mocha -- 'test/**/*.js'",
-    "start": "node ./app/index.js",
-    "lint": "./node_modules/.bin/eslint ./* --ext .js"
+    "lint": "./node_modules/.bin/eslint ./src/* ./test/* --ext .js",
+    "start": "npm run build && node ./lib/app.js",
+    "test": "npm run build && ./node_modules/.bin/nyc npm run coverage"
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,9 @@
     "supertest": "^2.0.1"
   },
   "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.18.0",
+    "babel-preset-es2015": "^6.18.0",
     "eslint": "^3.8.1",
     "eslint-config-airbnb": "^12.0.0",
     "eslint-plugin-import": "^2.0.1",

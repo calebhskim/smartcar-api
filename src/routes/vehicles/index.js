@@ -1,5 +1,5 @@
-const express = require('express');
-const scApi = require('utils/SmartCarApi');
+import express from 'express';
+import scApi from '../../utils/SmartCarApi';
 
 const router = express.Router();
 

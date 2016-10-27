@@ -1,5 +1,5 @@
-const gm = require('./GMApi');
-const errorHandler = require('./ErrorHandler');
+import gm from './GMApi';
+import errorHandler from './ErrorHandler';
 
 const SmartCarApi = {
   vehicleInfo: (id, cb) => {

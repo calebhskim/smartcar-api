@@ -1,4 +1,4 @@
-const req = require('request');
+import req from 'request';
 
 const request = req.defaults({
   baseUrl: 'http://gmapi.azurewebsites.net',

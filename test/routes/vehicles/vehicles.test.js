@@ -1,11 +1,11 @@
-const sinon = require('sinon');
-const request = require('supertest');
-const chai = require('chai');
-const app = require('../../../app');
+import sinon from 'sinon';
+import request from 'supertest';
+import chai, { expect } from 'chai';
+import chaiThings from 'chai-things';
+import app from '../../../lib/app';
 
-const expect = chai.expect;
 chai.should();
-chai.use(require('chai-things'));
+chai.use(chaiThings);
 
 const BAD_ID = 4321;
 const GOOD_ID_1 = 1234;
