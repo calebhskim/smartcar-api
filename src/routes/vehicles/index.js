@@ -26,8 +26,8 @@ router.get('/:id/fuel', (req, res) => {
     const { status, data: { tank } } = response;
 
     if (tank.percentage === 'null') {
-      return res.status(400).json({
-        status: 400,
+      return res.status(404).json({
+        status: 404,
         message: `Vehicle with id ${req.params.id} does not have fuel.`,
       });
     }
@@ -41,8 +41,8 @@ router.get('/:id/battery', (req, res) => {
     const { status, data: { battery } } = response;
 
     if (battery.percentage === 'null') {
-      return res.status(400).json({
-        status: 400,
+      return res.status(404).json({
+        status: 404,
         message: `Vehicle with id ${req.params.id} does not have a battery.`,
       });
     }
