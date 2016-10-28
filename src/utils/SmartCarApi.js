@@ -2,83 +2,111 @@ import gm from './GMApi';
 import errorHandler from './ErrorHandler';
 
 const SmartCarApi = {
-  vehicleInfo: (id, cb) => {
-    gm.vehicleInfo(id, (error, response) => {
-      if (error) {
-        return cb(errorHandler(error));
-      }
+  vehicleInfo: (id) => {
+    return new Promise((resolve, reject) => {
+      gm.vehicleInfo(id).then((response) => {
+        const { status, data: { data: { vin, color, fourDoorSedan, driveTrain } } } = response;
+ 
+        if (status !== 200) {
+          reject({
+            status,
+            message: reason,
+          });
+        }
 
-      const { status, data: { vin, color, fourDoorSedan, driveTrain } } = response;
-
-      return cb(null, {
-        data: {
-          vin: vin.value,
-          color: color.value,
-          doorCount: fourDoorSedan.value ? 4 : 2,
-          driveTrain: driveTrain.value,
-        },
-        status,
-      });
-    });
-  },
-  security: (id, cb) => {
-    gm.vehicleSecurityStatus(id, (error, response) => {
-      if (error) {
-        return cb(errorHandler(error));
-      }
-
-      const { status, data: { doors: { values } } } = response;
-
-      return cb(null, {
-        data: values.map((door) => {
-          const { location, locked } = door;
-
-          return {
-            location: location.value,
-            locked: locked.value,
-          };
-        }),
-        status,
-      });
-    });
-  },
-  energy: (id, cb) => {
-    gm.vehicleEnergy(id, (error, response) => {
-      if (error) {
-        return cb(errorHandler(error));
-      }
-
-      const { status, data: { tankLevel, batteryLevel } } = response;
-
-      return cb(null, {
-        data: {
-          tank: {
-            percentage: tankLevel.value,
+        resolve({
+          data: {
+            vin: vin.value,
+            color: color.value,
+            doorCount: fourDoorSedan.value ? 4 : 2,
+            driveTrain: driveTrain.value,
           },
-          battery: {
-            percentage: batteryLevel.value,
-          },
-        },
-        status,
+          status,
+        });
+      }).catch((error) => {
+        reject(errorHandler(error));
       });
     });
   },
-  engine: (id, action, cb) => {
+  security: (id) => {
+    return new Promise((resolve, reject) => {
+      gm.vehicleSecurityStatus(id).then((response) => {
+        const { status, data: { data: { doors: { values } } } } = response;
+
+        if (status !== 200) {
+          reject({
+            status,
+            message: reason,
+          });
+        }
+
+        resolve({
+          data: values.map((door) => {
+            const { location, locked } = door;
+
+            return {
+              location: location.value,
+              locked: locked.value,
+            };
+          }),
+          status,
+        });
+      }).catch((error) => {
+        reject(errorHandler(error));  
+      });
+    });
+  },
+  energy: (id) => {
+    return new Promise((resolve, reject) => {
+      gm.vehicleEnergy(id).then((response) => {
+        const { status, data: { data: { tankLevel, batteryLevel } } } = response;
+
+        if (status !== 200) {
+          reject({
+            status,
+            message: reason,
+          });
+        }
+
+        resolve({
+          data: {
+            tank: {
+              percentage: tankLevel.value,
+            },
+            battery: {
+              percentage: batteryLevel.value,
+            },
+          },
+          status,
+        });
+      }).catch((error) => {
+        reject(errorHandler(error));
+      });
+    });
+  },
+  engine: (id, action) => {
     const commands = { START: 'START_VEHICLE', STOP: 'STOP_VEHICLE' };
     const result = { EXECUTED: 'success', FAILED: 'error' };
+    
+    return new Promise((resolve, reject) => {
+      gm.vehicleEngine(id, commands[action]).then((response) => {
+        const { status, data: { actionResult } } = response;
 
-    gm.vehicleEngine(id, commands[action], (error, response) => {
-      if (error) {
-        return cb(errorHandler(error));
-      }
+        if (status !== 200) {
+          reject({
+            status,
+            message: reason,
+          });
+        }
 
-      const { status, actionResult } = response;
-
-      return cb(null, {
-        data: {
-          status: result[actionResult.status],
-        },
-        status,
+        resolve({
+          data: {
+            status: result[actionResult.status],
+          },
+          status,
+        });
+      }).catch((error) => {
+        reject(errorHandler(error));
       });
     });
   },

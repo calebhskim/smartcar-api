@@ -4,33 +4,25 @@ import scApi from '../../utils/SmartCarApi';
 const router = express.Router();
 
 router.get('/:id', (req, res) => {
-  scApi.vehicleInfo(req.params.id, (error, response) => {
-    if (error) {
-      return res.status(error.status).json(error);
-    }
-
+  scApi.vehicleInfo(req.params.id).then((response) => {
     const { status, data } = response;
     return res.status(status).json(data);
+  }).catch((error) => {
+    return res.status(error.status).json(error);
   });
 });
 
 router.get('/:id/doors', (req, res) => {
-  scApi.security(req.params.id, (error, response) => {
-    if (error) {
-      return res.status(error.status).json(error);
-    }
-
+  scApi.security(req.params.id).then((response) => {
     const { status, data } = response;
     return res.status(status).json(data);
+  }).catch((error) => {
+    return res.status(error.status).json(error);
   });
 });
 
 router.get('/:id/fuel', (req, res) => {
-  scApi.energy(req.params.id, (error, response) => {
-    if (error) {
-      return res.status(error.status).json(error);
-    }
-
+  scApi.energy(req.params.id).then((response) => {
     const { status, data: { tank } } = response;
 
     if (tank.percentage === 'null') {
@@ -39,16 +31,15 @@ router.get('/:id/fuel', (req, res) => {
         message: `Vehicle with id ${req.params.id} does not have fuel.`,
       });
     }
+
     return res.status(status).json(tank);
-  });
+  }).catch((error) => {
+    return res.status(error.status).json(error);
+  });;
 });
 
 router.get('/:id/battery', (req, res) => {
-  scApi.energy(req.params.id, (error, response) => {
-    if (error) {
-      return res.status(error.status).json(error);
-    }
-
+  scApi.energy(req.params.id).then((response) => {
     const { status, data: { battery } } = response;
 
     if (battery.percentage === 'null') {
@@ -59,6 +50,8 @@ router.get('/:id/battery', (req, res) => {
     }
 
     return res.status(status).json(battery);
+  }).catch((error) => {
+    return res.status(error.status).json(error);
   });
 });
 
@@ -73,14 +66,12 @@ router.post('/:id/engine', (req, res) => {
       });
     }
 
-    return scApi.engine(req.params.id, body.action, (error, response) => {
-      if (error) {
-        return res.status(error.status).json(error);
-      }
-
+    return scApi.engine(req.params.id, body.action).then((response) => {
       const { status, data } = response;
 
       return res.status(status).json(data);
+    }).catch((error) => {
+      return res.status(error.status).json(error);
     });
   }
 
