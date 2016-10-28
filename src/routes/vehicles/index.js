@@ -7,18 +7,14 @@ router.get('/:id', (req, res) => {
   scApi.vehicleInfo(req.params.id).then((response) => {
     const { status, data } = response;
     return res.status(status).json(data);
-  }).catch((error) => {
-    return res.status(error.status).json(error);
-  });
+  }).catch(error => res.status(error.status).json(error));
 });
 
 router.get('/:id/doors', (req, res) => {
   scApi.security(req.params.id).then((response) => {
     const { status, data } = response;
     return res.status(status).json(data);
-  }).catch((error) => {
-    return res.status(error.status).json(error);
-  });
+  }).catch(error => res.status(error.status).json(error));
 });
 
 router.get('/:id/fuel', (req, res) => {
@@ -33,9 +29,7 @@ router.get('/:id/fuel', (req, res) => {
     }
 
     return res.status(status).json(tank);
-  }).catch((error) => {
-    return res.status(error.status).json(error);
-  });;
+  }).catch(error => res.status(error.status).json(error));
 });
 
 router.get('/:id/battery', (req, res) => {
@@ -50,9 +44,7 @@ router.get('/:id/battery', (req, res) => {
     }
 
     return res.status(status).json(battery);
-  }).catch((error) => {
-    return res.status(error.status).json(error);
-  });
+  }).catch(error => res.status(error.status).json(error));
 });
 
 router.post('/:id/engine', (req, res) => {
@@ -70,9 +62,7 @@ router.post('/:id/engine', (req, res) => {
       const { status, data } = response;
 
       return res.status(status).json(data);
-    }).catch((error) => {
-      return res.status(error.status).json(error);
-    });
+    }).catch(error => res.status(error.status).json(error));
   }
 
   return res.status(400).json({
