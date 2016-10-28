@@ -211,7 +211,7 @@ describe('SmartCar Routes', () => {
     });
 
     describe(`Given a valid id ${GOOD_ID_1} and invalid action`, () => {
-      it('Should return correct vehicle engine status', (done) => {
+      it('Should error with 400', (done) => {
         request(app)
           .post(`/vehicles/${GOOD_ID_1}/engine`)
           .send({
@@ -229,7 +229,7 @@ describe('SmartCar Routes', () => {
     });
 
     describe(`Given a valid id ${GOOD_ID_1} and invalid body`, () => {
-      it('Should return correct vehicle engine status', (done) => {
+      it('Should error with 400', (done) => {
         request(app)
           .post(`/vehicles/${GOOD_ID_1}/engine`)
           .send({

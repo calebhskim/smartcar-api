@@ -1,23 +1,27 @@
 import express from 'express';
+import apicache from 'apicache';
 import scApi from '../../utils/SmartCarApi';
 
 const router = express.Router();
+const cache = apicache.middleware;
 
-router.get('/:id', (req, res) => {
+const onlyStatus200 = req => req.statusCode === 200;
+
+router.get('/:id', cache('10 minutes', onlyStatus200), (req, res) => {
   scApi.vehicleInfo(req.params.id).then((response) => {
     const { status, data } = response;
     return res.status(status).json(data);
   }).catch(error => res.status(error.status).json(error));
 });
 
-router.get('/:id/doors', (req, res) => {
+router.get('/:id/doors', cache('10 minutes', onlyStatus200), (req, res) => {
   scApi.security(req.params.id).then((response) => {
     const { status, data } = response;
     return res.status(status).json(data);
   }).catch(error => res.status(error.status).json(error));
 });
 
-router.get('/:id/fuel', (req, res) => {
+router.get('/:id/fuel', cache('10 minutes', onlyStatus200), (req, res) => {
   scApi.energy(req.params.id).then((response) => {
     const { status, data: { tank } } = response;
 
@@ -32,7 +36,7 @@ router.get('/:id/fuel', (req, res) => {
   }).catch(error => res.status(error.status).json(error));
 });
 
-router.get('/:id/battery', (req, res) => {
+router.get('/:id/battery', cache('10 minutes', onlyStatus200), (req, res) => {
   scApi.energy(req.params.id).then((response) => {
     const { status, data: { battery } } = response;
 
@@ -58,6 +62,7 @@ router.post('/:id/engine', (req, res) => {
       });
     }
 
+    cache('10 minutes', onlyStatus200);
     return scApi.engine(req.params.id, body.action).then((response) => {
       const { status, data } = response;
 
