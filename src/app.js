@@ -1,8 +1,7 @@
-require('app-module-path').addPath(__dirname);
-const express = require('express');
-const exphbs = require('express-handlebars');
-const bodyParser = require('body-parser');
-const config = require('config');
+import express from 'express';
+import exphbs from 'express-handlebars';
+import bodyParser from 'body-parser';
+import config from  './config';
 
 const app = module.exports = express();
 const hbs = exphbs.create({
@@ -19,7 +18,7 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
-app.use('/vehicles', require('routes/vehicles'));
+app.use('/vehicles', require('./routes/vehicles'));
 
 app.use(require('./middleware/404.js'));
 

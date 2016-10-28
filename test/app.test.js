@@ -1,7 +1,7 @@
-const sinon = require('sinon');
-const request = require('supertest');
-const { expect } = require('chai');
-const app = require('../app');
+import sinon from 'sinon';
+import request from 'supertest';
+import { expect } from 'chai';
+import app from '../lib/app';
 
 describe('Application Routes', () => {
   describe('#GET invalid route', () => {
