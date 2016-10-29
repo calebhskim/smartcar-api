@@ -1,4 +1,4 @@
-module.exports = (error) => {
+export default (error) => {
   const { status, message } = error;
   return {
     status: status || 500,

@@ -104,4 +104,4 @@ const SmartCarApi = {
   },
 };
 
-module.exports = SmartCarApi;
+export default SmartCarApi;
