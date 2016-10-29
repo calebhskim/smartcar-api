@@ -8,10 +8,9 @@ const cache = apicache.middleware;
 const onlyStatus200 = req => req.statusCode === 200;
 
 router.get('/:id', cache('10 minutes', onlyStatus200), (req, res) => {
-  scApi.vehicleInfo(req.params.id).then((response) => {
-    const { status, data } = response;
-    return res.status(status).json(data);
-  }).catch(error => res.status(error.status).json(error));
+  scApi.vehicleInfo(req.params.id)
+    .then(({ status, data }) => res.status(status).json(data))
+    .catch(error => res.status(error.status).json(error));
 });
 
 router.get('/:id/doors', (req, res) => {

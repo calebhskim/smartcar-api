@@ -2,30 +2,23 @@ import gm from './GMApi';
 import errorHandler from './ErrorHandler';
 
 const SmartCarApi = {
-  vehicleInfo: id => new Promise((resolve, reject) => {
-    gm.vehicleInfo(id).then((response) => {
-      const { status, data, reason } = response.data;
+  vehicleInfo: id => gm.vehicleInfo(id).then(({ data: { status, data, reason } }) => {
+    if (status !== '200') {
+      return Promise.reject({ status, message: reason });
+    }
 
-      if (status !== '200') {
-        reject({
-          status,
-          message: reason,
-        });
-      }
+    const { vin, color, fourDoorSedan, driveTrain } = data;
 
-      const { vin, color, fourDoorSedan, driveTrain } = data;
-
-      resolve({
-        data: {
-          vin: vin.value,
-          color: color.value,
-          doorCount: fourDoorSedan.value ? 4 : 2,
-          driveTrain: driveTrain.value,
-        },
-        status,
-      });
-    }).catch(error => reject(errorHandler(error)));
-  }),
+    return {
+      data: {
+        vin: vin.value,
+        color: color.value,
+        doorCount: fourDoorSedan.value ? 4 : 2,
+        driveTrain: driveTrain.value,
+      },
+      status,
+    };
+  }).catch(error => Promise.reject(errorHandler(error))),
   security: id => new Promise((resolve, reject) => {
     gm.vehicleSecurityStatus(id).then((response) => {
       const { status, data, reason } = response.data;
