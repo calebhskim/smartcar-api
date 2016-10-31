@@ -14,16 +14,13 @@ router.get('/:id', cache('10 minutes', onlyStatus200), (req, res) => {
 });
 
 router.get('/:id/doors', (req, res) => {
-  scApi.security(req.params.id).then((response) => {
-    const { status, data } = response;
-    return res.status(status).json(data);
-  }).catch(error => res.status(error.status).json(error));
+  scApi.security(req.params.id)
+    .then(({ status, data }) => res.status(status).json(data))
+    .catch(error => res.status(error.status).json(error));
 });
 
 router.get('/:id/fuel', (req, res) => {
-  scApi.energy(req.params.id).then((response) => {
-    const { status, data: { tank } } = response;
-
+  scApi.energy(req.params.id).then(({ status, data: { tank } }) => {
     if (tank.percentage === 'null') {
       return res.status(404).json({
         status: 404,
@@ -36,9 +33,7 @@ router.get('/:id/fuel', (req, res) => {
 });
 
 router.get('/:id/battery', (req, res) => {
-  scApi.energy(req.params.id).then((response) => {
-    const { status, data: { battery } } = response;
-
+  scApi.energy(req.params.id).then(({ status, data: { battery } }) => {
     if (battery.percentage === 'null') {
       return res.status(404).json({
         status: 404,
@@ -61,11 +56,9 @@ router.post('/:id/engine', (req, res) => {
       });
     }
 
-    return scApi.engine(req.params.id, body.action).then((response) => {
-      const { status, data } = response;
-
-      return res.status(status).json(data);
-    }).catch(error => res.status(error.status).json(error));
+    return scApi.engine(req.params.id, body.action)
+      .then(({ status, data }) => res.status(status).json(data))
+      .catch(error => res.status(error.status).json(error));
   }
 
   return res.status(400).json({

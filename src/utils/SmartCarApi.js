@@ -1,8 +1,13 @@
 import gm from './GMApi';
-import errorHandler from './ErrorHandler';
+import errorHandler from './ErrorWrapper';
+
+const commands = { START: 'START_VEHICLE', STOP: 'STOP_VEHICLE' };
+const result = { EXECUTED: 'success', FAILED: 'error' };
 
 const SmartCarApi = {
-  vehicleInfo: id => gm.vehicleInfo(id).then(({ data: { status, data, reason } }) => {
+  vehicleInfo: id => gm.vehicleInfo(id).then((response) => {
+    const { status, data, reason } = response.data;
+
     if (status !== '200') {
       return Promise.reject({ status, message: reason });
     }
@@ -19,82 +24,62 @@ const SmartCarApi = {
       status,
     };
   }).catch(error => Promise.reject(errorHandler(error))),
-  security: id => new Promise((resolve, reject) => {
-    gm.vehicleSecurityStatus(id).then((response) => {
-      const { status, data, reason } = response.data;
+  security: id => gm.vehicleSecurityStatus(id).then((response) => {
+    const { status, data, reason } = response.data;
 
-      if (status !== '200') {
-        reject({
-          status,
-          message: reason,
-        });
-      }
+    if (status !== '200') {
+      return Promise.reject({ status, message: reason });
+    }
 
-      const { doors: { values } } = data;
+    const { doors: { values } } = data;
 
-      resolve({
-        data: values.map((door) => {
-          const { location, locked } = door;
+    return {
+      data: values.map((door) => {
+        const { location, locked } = door;
 
-          return {
-            location: location.value,
-            locked: locked.value,
-          };
-        }),
-        status,
-      });
-    }).catch(error => reject(errorHandler(error)));
-  }),
-  energy: id => new Promise((resolve, reject) => {
-    gm.vehicleEnergy(id).then((response) => {
-      const { status, data, reason } = response.data;
+        return {
+          location: location.value,
+          locked: locked.value,
+        };
+      }),
+      status,
+    };
+  }).catch(error => Promise.reject(errorHandler(error))),
+  energy: id => gm.vehicleEnergy(id).then((response) => {
+    const { status, data, reason } = response.data;
 
-      if (status !== '200') {
-        reject({
-          status,
-          message: reason,
-        });
-      }
+    if (status !== '200') {
+      return Promise.reject({ status, message: reason });
+    }
 
-      const { tankLevel, batteryLevel } = data;
+    const { tankLevel, batteryLevel } = data;
 
-      resolve({
-        data: {
-          tank: {
-            percentage: tankLevel.value,
-          },
-          battery: {
-            percentage: batteryLevel.value,
-          },
+    return {
+      data: {
+        tank: {
+          percentage: tankLevel.value,
         },
-        status,
-      });
-    }).catch(error => reject(errorHandler(error)));
-  }),
-  engine: (id, action) => {
-    const commands = { START: 'START_VEHICLE', STOP: 'STOP_VEHICLE' };
-    const result = { EXECUTED: 'success', FAILED: 'error' };
+        battery: {
+          percentage: batteryLevel.value,
+        },
+      },
+      status,
+    };
+  }).catch(error => Promise.reject(errorHandler(error))),
+  engine: (id, action) => gm.vehicleEngine(id, commands[action]).then((response) => {
+    const { status, actionResult, reason } = response.data;
 
-    return new Promise((resolve, reject) => {
-      gm.vehicleEngine(id, commands[action]).then((response) => {
-        const { status, actionResult, reason } = response.data;
+    if (status !== '200') {
+      return Promise.reject({ status, message: reason });
+    }
 
-        if (status !== '200') {
-          reject({
-            status,
-            message: reason,
-          });
-        }
-
-        resolve({
-          data: {
-            status: result[actionResult.status],
-          },
-          status,
-        });
-      }).catch(error => reject(errorHandler(error)));
-    });
-  },
+    return {
+      data: {
+        status: result[actionResult.status],
+      },
+      status,
+    };
+  }).catch(error => Promise.reject(errorHandler(error))),
 };
 
 export default SmartCarApi;
