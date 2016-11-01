@@ -40,8 +40,19 @@ npm test
 
 # Overview
 For this project I decided to build my server using [express](http://expressjs.com/) and make requests using [axios](https://github.com/mzabriskie/axios).
-I chose to use axios because it is a promise based HTTP client. Testing is done using [mocha](https://mochajs.org/), [chai](http://chaijs.com/), and [sinon](http://sinonjs.org/).
-The project is transpiled using [babel](https://babeljs.io/) and linting is done with [eslint](http://eslint.org/). I am using [airbnb's style guide](https://github.com/airbnb/javascript).
+I chose to use axios because it is a promise based HTTP client. Testing is done using [mocha](https://mochajs.org/), [chai](http://chaijs.com/), and [sinon](http://sinonjs.org/). The project is transpiled using [babel](https://babeljs.io/) and linting is done with [eslint](http://eslint.org/). I am using [airbnb's style guide](https://github.com/airbnb/javascript). View templates are built using [handlebars](http://handlebarsjs.com/).
+# Routes
+```js
+GET /vehicles/:id
+GET /vehicles/:id/doors
+GET /vehicles/:id/fuel
+GET /vehicles/:id/battery
+POST /vehicles/:id/engine
+  Content-Type: application/json
+  {
+    "action": "START|STOP"
+  }
+```
 # Request Lifecycle
 ```
 Client -> Express -> SmartCarApi.js -> GMApi.js
