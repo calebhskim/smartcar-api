@@ -1,6 +1,8 @@
 import express from 'express';
 import apicache from 'apicache';
 import scApi from '../../utils/SmartCarApi';
+import errorWrapper from '../../utils/ErrorWrapper';
+import errors  from '../../utils/Errors';
 
 const router = express.Router();
 const cache = apicache.middleware;
@@ -16,16 +18,16 @@ router.get('/:id', cache('10 minutes', onlyStatus200), (req, res) => {
 router.get('/:id/doors', (req, res) => {
   scApi.security(req.params.id)
     .then(({ status, data }) => res.status(status).json(data))
-    .catch(error => res.status(error.status).json(error));
+    .catch((error) => {
+      res.status(error.status).json(error);
+    });
 });
 
 router.get('/:id/fuel', (req, res) => {
   scApi.energy(req.params.id).then(({ status, data: { tank } }) => {
     if (tank.percentage === 'null') {
-      return res.status(404).json({
-        status: 404,
-        message: `Vehicle with id ${req.params.id} does not have fuel.`,
-      });
+      const err = errorWrapper(null, errors.NOTFOUND, `Vehicle with id ${req.params.id} does not have fuel.`);
+      return res.status(err.status).json(err);
     }
 
     return res.status(status).json(tank);
@@ -35,10 +37,8 @@ router.get('/:id/fuel', (req, res) => {
 router.get('/:id/battery', (req, res) => {
   scApi.energy(req.params.id).then(({ status, data: { battery } }) => {
     if (battery.percentage === 'null') {
-      return res.status(404).json({
-        status: 404,
-        message: `Vehicle with id ${req.params.id} does not have a battery.`,
-      });
+      const err = errorWrapper(null, errors.NOTFOUND, `Vehicle with id ${req.params.id} does not have a battery.`);
+      return res.status(err.status).json(err);
     }
 
     return res.status(status).json(battery);
@@ -47,13 +47,12 @@ router.get('/:id/battery', (req, res) => {
 
 router.post('/:id/engine', (req, res) => {
   const { body } = req;
+  const badRequest = errorWrapper(null, errors.BADREQUEST, 'Invalid or no action sent.');
 
   if (body && body.action) {
     if (body.action !== 'START' && body.action !== 'STOP') {
-      return res.status(400).json({
-        status: 400,
-        message: `Invalid action ${body.action} is not one of START | STOP.`,
-      });
+      const err = errorWrapper(null, errors.BADREQUEST, `Invalid action ${body.action} is not one of START | STOP.`);
+      return res.status(err.status).json(err);
     }
 
     return scApi.engine(req.params.id, body.action)
@@ -61,10 +60,7 @@ router.post('/:id/engine', (req, res) => {
       .catch(error => res.status(error.status).json(error));
   }
 
-  return res.status(400).json({
-    status: 400,
-    message: 'Invalid or no action sent.',
-  });
+  return res.status(badRequest.status).json(badRequest);
 });
 
 export default router;

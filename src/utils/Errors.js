@@ -5,4 +5,6 @@ export default {
   404: 'Not found.',
   422: 'Invalid action.',
   500: 'Internal server error.',
+  BADREQUEST: 400,
+  NOTFOUND: 404,
 };

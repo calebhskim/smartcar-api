@@ -1,5 +1,5 @@
 import gm from './GMApi';
-import errorHandler from './ErrorWrapper';
+import errorWrapper from './ErrorWrapper';
 
 const commands = { START: 'START_VEHICLE', STOP: 'STOP_VEHICLE' };
 const result = { EXECUTED: 'success', FAILED: 'error' };
@@ -23,7 +23,7 @@ const SmartCarApi = {
       },
       status,
     };
-  }).catch(error => Promise.reject(errorHandler(error))),
+  }, error => Promise.reject(errorWrapper(error))),
   security: id => gm.vehicleSecurityStatus(id).then((response) => {
     const { status, data, reason } = response.data;
 
@@ -44,7 +44,7 @@ const SmartCarApi = {
       }),
       status,
     };
-  }).catch(error => Promise.reject(errorHandler(error))),
+  }, error => Promise.reject(errorWrapper(error))),
   energy: id => gm.vehicleEnergy(id).then((response) => {
     const { status, data, reason } = response.data;
 
@@ -65,7 +65,7 @@ const SmartCarApi = {
       },
       status,
     };
-  }).catch(error => Promise.reject(errorHandler(error))),
+  }, error => Promise.reject(errorWrapper(error))),
   engine: (id, action) => gm.vehicleEngine(id, commands[action]).then((response) => {
     const { status, actionResult, reason } = response.data;
 
@@ -79,7 +79,7 @@ const SmartCarApi = {
       },
       status,
     };
-  }).catch(error => Promise.reject(errorHandler(error))),
+  }, error => Promise.reject(errorWrapper(error))),
 };
 
 export default SmartCarApi;

@@ -1,11 +1,10 @@
 import errors from './Errors';
 
-export default (error) => {
-  const { status } = error;
-  const statusCode = status || 500;
+export default (error, code, message) => {
+  const statusCode = (error && error.status) || 500;
 
   return {
-    status: statusCode,
-    message: errors[statusCode],
+    status: code || statusCode,
+    message: message || errors[statusCode],
   };
 };

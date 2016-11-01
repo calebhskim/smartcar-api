@@ -184,7 +184,7 @@ describe('SmartCar Routes', () => {
           .expect(404)
           .end((err, res) => {
             if (err) return done(err);
-
+            
             const { message } = res.body;
             expect(message).to.eql(`Vehicle id: ${BAD_ID} not found.`);
             done();
