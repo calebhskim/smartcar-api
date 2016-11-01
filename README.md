@@ -42,7 +42,7 @@ npm test
 For this project I decided to build my server using [express](http://expressjs.com/) and make requests using [axios](https://github.com/mzabriskie/axios).
 I chose to use axios because it is a promise based HTTP client. Testing is done using [mocha](https://mochajs.org/), [chai](http://chaijs.com/), and [sinon](http://sinonjs.org/).
 The project is transpiled using [babel](https://babeljs.io/) and linting is done with [eslint](http://eslint.org/). I am using [airbnb's style guide](https://github.com/airbnb/javascript).
-## Request Lifecycle
+# Request Lifecycle
 ```
 Client -> Express -> SmartCarApi.js -> GMApi.js
 ```
