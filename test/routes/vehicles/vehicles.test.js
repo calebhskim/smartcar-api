@@ -232,9 +232,7 @@ describe('SmartCar Routes', () => {
       it('Should error with 400', (done) => {
         request(app)
           .post(`/vehicles/${GOOD_ID_1}/engine`)
-          .send({
-            "bad-action": "bad"
-          })
+          .send('bad')
           .expect(400)
           .end((err, res) => {
             if (err) return done(err);
