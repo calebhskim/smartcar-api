@@ -37,3 +37,16 @@ npm test
     └── partials
 
 ```
+
+# Overview
+For this project I decided to build my server using [express](http://expressjs.com/) and make requests using [axios](https://github.com/mzabriskie/axios).
+I chose to use axios because it is a promise based HTTP client. Testing is done using [mocha](https://mochajs.org/), [chai](http://chaijs.com/), and [sinon](http://sinonjs.org/).
+The project is transpiled using (babel)[https://babeljs.io/] and I am using (airbnb's style guide)[https://github.com/airbnb/javascript].
+## Request Lifecycle
+```
+Client -> Express -> SmartCarApi.js -> GMApi.js
+```
+# Notes
+All javascript in `src` is transpiled into a directory called `lib` when `npm test` or `npm start` is run. You can optionally run
+`npm run build` to build the `src`. When running `npm test` all coverage information can be found in the `coverage` directory. Occasionally
+when running `npm test` sometimes a couple of the end-to-end tests will timeout. Running the tests again should allow all the tests to pass. 
