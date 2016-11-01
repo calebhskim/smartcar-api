@@ -96,10 +96,10 @@ describe('SmartCar Routes', () => {
     });
 
     describe(`Given a valid id ${GOOD_ID_2} that does not have fuel`, () => {
-      it('Should return 400 with appropriate message', (done) => {
+      it('Should return 404 with appropriate message', (done) => {
         request(app)
           .get(`/vehicles/${GOOD_ID_2}/fuel`)
-          .expect(400)
+          .expect(404)
           .end((err, res) => {
             if (err) return done(err);
             
@@ -143,10 +143,10 @@ describe('SmartCar Routes', () => {
     });
 
     describe(`Given a valid id ${GOOD_ID_1} that does not have battery`, () => {
-      it('Should return 400 with appropriate message', (done) => {
+      it('Should return 404 with appropriate message', (done) => {
         request(app)
           .get(`/vehicles/${GOOD_ID_1}/battery`)
-          .expect(400)
+          .expect(404)
           .end((err, res) => {
             if (err) return done(err);
             
@@ -184,7 +184,7 @@ describe('SmartCar Routes', () => {
           .expect(404)
           .end((err, res) => {
             if (err) return done(err);
-
+            
             const { message } = res.body;
             expect(message).to.eql(`Vehicle id: ${BAD_ID} not found.`);
             done();
@@ -211,7 +211,7 @@ describe('SmartCar Routes', () => {
     });
 
     describe(`Given a valid id ${GOOD_ID_1} and invalid action`, () => {
-      it('Should return correct vehicle engine status', (done) => {
+      it('Should error with 400', (done) => {
         request(app)
           .post(`/vehicles/${GOOD_ID_1}/engine`)
           .send({
@@ -229,12 +229,10 @@ describe('SmartCar Routes', () => {
     });
 
     describe(`Given a valid id ${GOOD_ID_1} and invalid body`, () => {
-      it('Should return correct vehicle engine status', (done) => {
+      it('Should error with 400', (done) => {
         request(app)
           .post(`/vehicles/${GOOD_ID_1}/engine`)
-          .send({
-            "bad-action": "bad"
-          })
+          .send('bad')
           .expect(400)
           .end((err, res) => {
             if (err) return done(err);

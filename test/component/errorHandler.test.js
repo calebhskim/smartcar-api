@@ -1,28 +1,41 @@
-import { expect } from 'chai';
-import errorHandler from '../../lib/utils/ErrorHandler';
+import chai, { expect } from 'chai';
+import spies from 'chai-spies';
+import errorHandler from '../../lib/middleware/ErrorHandler';
 
-describe('Error Handler', () => {
+chai.use(spies);
+
+describe('ErrorHandler', () => {
   describe('Given a valid error', () => {
     it('Should return error status and message', (done) => {
-      const err = errorHandler({
+      const testErr = {
         status: 123,
         message: "cookie",
-      });
+      };
+ 
+      const send = err => err;
+      const sendSpy = chai.spy(send);
+      const status = errStatus => ({ send: sendSpy });
+      const statusSpy = chai.spy(status);
+      const err = errorHandler(testErr, null, { status: statusSpy });
 
-      expect(err.status).to.eql(123);
-      expect(err.message).to.eql('cookie');
+      expect(statusSpy).to.have.been.called();
+      expect(statusSpy).to.have.been.called.with(123);
+      expect(sendSpy).to.have.been.called();
+      expect(sendSpy).to.have.been.called.with(testErr);
       done();
     });
   });
 
-  describe('Given a invalid/improper error', () => {
-    it('Should default to an internal server error', (done) => {
-      const err = errorHandler({
-        mustache: 'no',
-      });
+  describe('Given no error', () => {
+    it('Should call callback', (done) => {
+      const cb = () => {
+        return 42; 
+      };
 
-      expect(err.status).to.eql(500);
-      expect(err.message).to.eql('Internal server error.');
+      const spy = chai.spy(cb);
+      const err = errorHandler(null, null, null, spy);
+      
+      expect(spy).to.have.been.called();
       done();
     });
   });

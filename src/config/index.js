@@ -1,5 +1,3 @@
-const config = {
+export default {
   http: 3000,
 };
-
-module.exports = config;
