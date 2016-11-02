@@ -1,5 +1,5 @@
 # smartcar-api
-Smartcar API Project
+Smartcar API Project. Node v6.2.2
 
 # Install
 ```js
