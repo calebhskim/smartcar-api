@@ -1,11 +1,11 @@
+import bodyParser from 'body-parser';
 import express from 'express';
 import exphbs from 'express-handlebars';
-import bodyParser from 'body-parser';
 import rateLimit from 'express-rate-limit';
 import errorHandler from './middleware/ErrorHandler';
-import vehicles from './routes/vehicles';
-import notFound from './middleware/404';
 import config from  './config';
+import notFound from './middleware/404';
+import vehicles from './routes/vehicles';
 
 const app = express();
 const hbs = exphbs.create({
