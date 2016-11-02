@@ -47,11 +47,17 @@ router.get('/:id/battery', (req, res) => {
 
 router.post('/:id/engine', (req, res) => {
   const { body } = req;
+  const contentType = req.get('content-type');
   const badRequest = errorWrapper(null, errors.BADREQUEST, 'Invalid or no action sent.');
+
+  if (!contentType || contentType.indexOf('application/json') !== 0) {
+    const err = errorWrapper(badRequest, null, 'Content-Type header must be present and have value "application/json"');
+    return res.status(err.status).json(err);
+  }
 
   if (body && body.action) {
     if (body.action !== 'START' && body.action !== 'STOP') {
-      const err = errorWrapper(null, errors.BADREQUEST, `Invalid action ${body.action} is not one of START | STOP.`);
+      const err = errorWrapper(badRequest, null, `Invalid action ${body.action} is not one of START | STOP.`);
       return res.status(err.status).json(err);
     }
 

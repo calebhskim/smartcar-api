@@ -9,7 +9,7 @@ describe('ErrorHandler', () => {
     it('Should return error status and message', (done) => {
       const testErr = {
         status: 123,
-        message: "cookie",
+        message: 'Invalid body.',
       };
  
       const send = err => err;

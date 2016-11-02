@@ -174,10 +174,28 @@ describe('SmartCar Routes', () => {
   });
 
   describe('#POST /vehicles/:id/engine', () => {
+    describe(`Given a request with a non application/json content-type header`, () => {
+      it('Should error with a 400 and appropriate message', (done) => {
+        request(app)
+          .post(`/vehicles/${BAD_ID}/engine`)
+          .set('content-type', 'text/html')
+          .send("action")
+          .expect(400)
+          .end((err, res) => {
+            if (err) return done(err);
+
+            const { message } = res.body;
+            expect(message).to.eql('Content-Type header must be present and have value "application/json"');
+            done();
+          });
+      });
+    });
+
     describe(`Given an invalid id ${BAD_ID}`, () => {
       it('Should error with a 404 and appropriate message', (done) => {
         request(app)
           .post(`/vehicles/${BAD_ID}/engine`)
+          .set('content-type', 'application/json')
           .send({
             "action": "START"
           })
@@ -196,6 +214,7 @@ describe('SmartCar Routes', () => {
       it('Should return correct vehicle engine status', (done) => {
         request(app)
           .post(`/vehicles/${GOOD_ID_1}/engine`)
+          .set('content-type', 'application/json')
           .send({
             "action": "START"
           })
@@ -210,10 +229,30 @@ describe('SmartCar Routes', () => {
       });
     });
 
+    describe(`Given a valid id ${GOOD_ID_1} and no action`, () => {
+      it('Should error with 400', (done) => {
+        request(app)
+          .post(`/vehicles/${GOOD_ID_1}/engine`)
+          .set('content-type', 'application/json')
+          .send({
+            "blob": "START"
+          })
+          .expect(400)
+          .end((err, res) => {
+            if (err) return done(err);
+
+            const { message } = res.body;
+            expect(message).to.be.eql('Invalid or no action sent.');
+            done();
+          });
+      });
+    });
+
     describe(`Given a valid id ${GOOD_ID_1} and invalid action`, () => {
       it('Should error with 400', (done) => {
         request(app)
           .post(`/vehicles/${GOOD_ID_1}/engine`)
+          .set('content-type', 'application/json')
           .send({
             "action": "HELP"
           })
@@ -232,13 +271,14 @@ describe('SmartCar Routes', () => {
       it('Should error with 400', (done) => {
         request(app)
           .post(`/vehicles/${GOOD_ID_1}/engine`)
+          .set('content-type', 'application/json')
           .send('bad')
           .expect(400)
           .end((err, res) => {
             if (err) return done(err);
 
             const { message } = res.body;
-            expect(message).to.be.eql('Invalid or no action sent.');
+            expect(message).to.be.eql('Invalid body.');
             done();
           });
       });
